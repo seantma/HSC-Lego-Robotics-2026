@@ -231,6 +231,27 @@
     .mini-list{padding-left:20px}.mini-list li{margin:7px 0}
     @media(max-width:900px){.checkin-grid{grid-template-columns:1fr}}
 
+  
+    .qr-card{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:22px;
+      align-items:center;
+    }
+    .qr-card img{
+      width:100%;
+      max-width:220px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .qr-card h4{margin-top:0;font-size:1.4rem}
+    @media(max-width:700px){
+      .qr-card{grid-template-columns:1fr;text-align:center}
+      .qr-card img{margin:0 auto}
+    }
+
   </style>
 </head>
 <body>
@@ -246,6 +267,7 @@
       <a href="#troubleshoot">Troubleshoot</a>
       <a href="#explore">Explore</a>
       <a href="#checkin">Check-In</a>
+      <a href="#qr-access">QR</a>
       <a href="README.md">README</a>
     </nav>
   </div>
@@ -477,6 +499,20 @@
       <a href="https://education.lego.com/en-gb/downloads/retiredproducts/mindstorms-ev3/curriculum/">Retired EV3 Curriculum Archive</a>
     </div>
   </section>
+
+  <section class="section" id="qr-access">
+    <h3>📱 Quick Access</h3>
+    <p class="section-lead">Scan this QR code from a phone or tablet to open the LEGO EV3 Student Hub.</p>
+    <div class="panel qr-card">
+      <img src="assets/student-hub-qr.png" alt="QR code for LEGO EV3 Student Hub">
+      <div>
+        <h4>LEGO EV3 Student Hub QR Code</h4>
+        <p>Use this code in class, on the Engineering Notebook cover, or on printed handouts so students can reach the hub quickly.</p>
+        <p><strong>Tip:</strong> because this is a Bitly QR code, you can update the destination later without replacing every printed QR code.</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
