@@ -1,30 +1,423 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LEGO EV3 Student Hub</title>
-<style>
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;line-height:1.55}
-a{color:#0969da} .card{border:1px solid #d0d7de;border-radius:12px;padding:20px;margin:18px 0}
-img{max-width:100%;height:auto;border-radius:8px}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LEGO EV3 Student Hub</title>
+  <meta name="description" content="Student navigation hub for LEGO MINDSTORMS EV3 / Education Core Set 45544." />
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --panel: #ffffff;
+      --text: #1f2328;
+      --muted: #57606a;
+      --border: #d0d7de;
+      --accent: #0969da;
+      --accent-soft: #ddf4ff;
+      --shadow: 0 8px 24px rgba(140,149,159,.2);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, #eaf5ff 0, transparent 30%),
+        var(--bg);
+      line-height: 1.55;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+    header {
+      padding: 34px 0 20px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .brand h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.5rem); }
+    .brand p { margin: 5px 0 0; color: var(--muted); font-size: .98rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 10px; }
+    nav a {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 54px 0 24px;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero h2 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+    .hero p { color: var(--muted); font-size: 1.08rem; max-width: 760px; }
+    .hero img {
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: white;
+      border: 1px solid var(--border);
+    }
+    .progression {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      font-weight: 700;
+    }
+
+    .section { padding: 28px 0; scroll-margin-top: 110px; }
+    .section h3 {
+      font-size: 1.8rem;
+      margin: 0 0 10px;
+    }
+    .section-lead { color: var(--muted); margin-top: 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .card {
+      display: block;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      transition: transform .16s ease, box-shadow .16s ease;
+      min-height: 250px;
+    }
+    .card:hover { transform: translateY(-3px); text-decoration: none; box-shadow: 0 14px 34px rgba(140,149,159,.28); }
+    .card .icon { font-size: 2rem; }
+    .card h4 { margin: 12px 0 8px; font-size: 1.45rem; color: var(--text); }
+    .card p { color: var(--muted); margin: 0 0 16px; }
+    .card .go { font-weight: 700; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .panel img {
+      width: 100%;
+      max-width: 460px;
+      display: block;
+      margin: 0 auto 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+    .button {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 11px 15px;
+      border-radius: 10px;
+      margin: 6px 8px 6px 0;
+    }
+    .button:hover { color: #fff; text-decoration: none; filter: brightness(.95); }
+    .button.secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+    ul.clean { padding-left: 20px; }
+    .resource-list li { margin: 8px 0; }
+
+    .trouble {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .trouble li {
+      counter-increment: step;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 15px 13px 52px;
+      position: relative;
+    }
+    .trouble li::before {
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 11px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .quicklinks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    .quicklinks a {
+      display: block;
+      padding: 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 34px 0 50px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      font-size: .93rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .cards { grid-template-columns: 1fr; }
+      .quicklinks { grid-template-columns: 1fr; }
+      header { position: static; }
+      .section { scroll-margin-top: 20px; }
+    }
+  </style>
 </head>
 <body>
-<h1>LEGO MINDSTORMS EV3 Student Hub</h1>
-<p>This repository is designed primarily around the GitHub-rendered <strong>README.md</strong>.</p>
-<div class="card">
-<h2>Open the Student Hub</h2>
-<p><a href="README.md">View README.md</a></p>
-</div>
-<div class="card">
-<h2>Quick Downloads</h2>
-<ul>
-<li><a href="resources/01_user_guide/LEGO_EV3_User_Guide_US.pdf">EV3 User Guide</a></li>
-<li><a href="resources/02_robot_educator/LEGO_EV3_Robot_Educator_Build_Instructions.pdf">Robot Educator Build Instructions</a></li>
-<li><a href="resources/03_robotics_plan/LEGO_EV3_Introduction_to_Robotics_Lesson_Plan.pdf">Introduction to Robotics Lesson Plan</a></li>
-<li><a href="resources/04_legacy_and_open_source/LEGO_EV3_31313_Legacy_Builds.pdf">Legacy EV3 / 31313 Builds</a></li>
-</ul>
-</div>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <h1>LEGO EV3 Student Hub</h1>
+      <p>HSC LEGO Robotics · EV3 / 45544</p>
+    </div>
+    <nav>
+      <a href="#build">Build</a>
+      <a href="#program">Program</a>
+      <a href="#troubleshoot">Troubleshoot</a>
+      <a href="#explore">Explore</a>
+      <a href="README.md">README</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h2>Build it. Understand it. Make it better.</h2>
+      <p>
+        This site is your classroom navigation hub for LEGO MINDSTORMS EV3.
+        Use it to find the build instructions, user guides, robotics lesson materials,
+        troubleshooting help, and legacy/open-source projects you need.
+      </p>
+      <div class="progression">Follow → Understand → Modify → Solve → Explain → Reflect</div>
+    </div>
+    <img src="assets/ev3-hardware-overview.png" alt="LEGO EV3 hardware overview">
+  </section>
+
+  <section class="section">
+    <h3>Choose what you need</h3>
+    <p class="section-lead">Use these four cards as your starting point during class.</p>
+
+    <div class="cards">
+      <a class="card" href="#build">
+        <div class="icon">🧱</div>
+        <h4>Build</h4>
+        <p>Robot Educator / Driving Base instructions and build habits for accurate assembly.</p>
+        <span class="go">Open build resources →</span>
+      </a>
+
+      <a class="card" href="#program">
+        <div class="icon">💻</div>
+        <h4>Program</h4>
+        <p>EV3 User Guide, robotics lesson plans, motors, sensors, ports, and programming references.</p>
+        <span class="go">Open programming resources →</span>
+      </a>
+
+      <a class="card" href="#troubleshoot">
+        <div class="icon">🛠️</div>
+        <h4>Troubleshoot</h4>
+        <p>Use a repeatable engineering process before asking the instructor to fix the problem.</p>
+        <span class="go">Start troubleshooting →</span>
+      </a>
+
+      <a class="card" href="#explore">
+        <div class="icon">🚀</div>
+        <h4>Explore</h4>
+        <p>Legacy EV3 robots, official LEGO model libraries, and open-source EV3 projects.</p>
+        <span class="go">Explore more builds →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="build" class="section">
+    <h3>🧱 Build</h3>
+    <p class="section-lead">Start here when your team is building or checking the Robot Educator / 45544 model.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <img src="assets/robot-educator-build-preview.png" alt="Robot Educator build preview">
+        <h4>Classroom Robot Educator build</h4>
+        <p>Use the local PDF so the instructions remain available even if an old external link changes.</p>
+        <a class="button" href="resources/02_robot_educator/LEGO_EV3_Robot_Educator_Build_Instructions.pdf">Open build PDF</a>
+        <a class="button secondary" href="https://education.lego.com/en-gb/product-resources/mindstorms-ev3/downloads/building-instructions/">Official LEGO EV3 Builds</a>
+      </div>
+
+      <div class="panel">
+        <h4>Build habits</h4>
+        <ul class="clean">
+          <li>Accuracy before speed.</li>
+          <li>Check beam and axle length carefully.</li>
+          <li>Check left/right and front/back orientation.</li>
+          <li>Compare both sides of a symmetrical build.</li>
+          <li>Never force a Technic piece that should fit easily.</li>
+          <li>Find the last step where your build matched the diagram.</li>
+          <li>Ask your teammate what they observe before rebuilding.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="program" class="section">
+    <h3>💻 Program</h3>
+    <p class="section-lead">Use these references when you are learning the EV3 Brick, motors, sensors, ports, or programming.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <img src="assets/ev3-user-guide-cover.png" alt="EV3 User Guide cover">
+        <h4>EV3 User Guide</h4>
+        <p>Best reference for hardware, motors, sensors, ports, software, connections, and troubleshooting.</p>
+        <a class="button" href="resources/01_user_guide/LEGO_EV3_User_Guide_US.pdf">Open User Guide</a>
+      </div>
+
+      <div class="panel">
+        <img src="assets/robotics-lesson-plan-cover.png" alt="EV3 Introduction to Robotics lesson plan cover">
+        <h4>Robotics learning plan</h4>
+        <p>Official sequence covering setup, movement, object interaction, sensors, switches, and challenges.</p>
+        <a class="button" href="resources/03_robotics_plan/LEGO_EV3_Introduction_to_Robotics_Lesson_Plan.pdf">Open Robotics Plan</a>
+        <a class="button secondary" href="resources/03_robotics_plan/EV3_Learning_and_Programming_Guide.pdf">Open Learning Guide</a>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+      <h4>Quick hardware reminder</h4>
+      <img src="assets/motors-and-sensors-reference.png" alt="EV3 motors and sensors reference">
+      <ul class="clean">
+        <li><strong>Motors:</strong> normally connect to output ports A–D.</li>
+        <li><strong>Sensors:</strong> normally connect to input ports 1–4.</li>
+        <li><strong>Large Motor:</strong> strong drive motor.</li>
+        <li><strong>Medium Motor:</strong> compact, faster mechanism motor.</li>
+        <li><strong>Color Sensor:</strong> detects color / reflected light.</li>
+        <li><strong>Gyro Sensor:</strong> measures rotation.</li>
+        <li><strong>Touch Sensor:</strong> detects pressed / bumped / released.</li>
+        <li><strong>Ultrasonic Sensor:</strong> measures distance.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="troubleshoot" class="section">
+    <h3>🛠️ Troubleshoot</h3>
+    <p class="section-lead">Engineers do not stop at “it doesn't work.” Use evidence to isolate the problem.</p>
+
+    <ol class="trouble">
+      <li><strong>Observe:</strong> What exactly happened?</li>
+      <li><strong>Expected vs. actual:</strong> What did you expect instead?</li>
+      <li><strong>Power:</strong> Is the EV3 Brick on and sufficiently charged?</li>
+      <li><strong>Ports:</strong> Are motors and sensors plugged into the expected ports?</li>
+      <li><strong>Cables:</strong> Are they fully inserted?</li>
+      <li><strong>Mechanical check:</strong> Can wheels, gears, and mechanisms move freely?</li>
+      <li><strong>Build check:</strong> Compare the robot to the instruction image.</li>
+      <li><strong>Program check:</strong> Verify block, port, power, direction, rotations/degrees, and stop behavior.</li>
+      <li><strong>Small test:</strong> Run only the smallest piece that might be failing.</li>
+      <li><strong>Teammate check:</strong> Explain the problem out loud to your partner.</li>
+      <li><strong>Documentation:</strong> Use the User Guide or lesson guide.</li>
+      <li><strong>Ask for coaching:</strong> Tell the instructor what you already tested.</li>
+    </ol>
+
+    <div class="panel" style="margin-top:18px">
+      <strong>A useful help request:</strong>
+      <p>“We expected both motors to move forward. Motor B moves, but Motor C does not. We checked the cable and port and tested Motor C by itself.”</p>
+    </div>
+  </section>
+
+  <section id="explore" class="section">
+    <h3>🚀 Explore</h3>
+    <p class="section-lead">Use these after you understand the standard classroom build and want to study another design.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <img src="assets/legacy-31313-builds-cover.png" alt="Legacy LEGO EV3 31313 build cover">
+        <h4>Legacy EV3 / 31313 builds</h4>
+        <p>Includes classic EV3 robots such as TRACK3R, GRIPP3R, SPIK3R, R3PTAR, and EV3RSTORM.</p>
+        <a class="button" href="resources/04_legacy_and_open_source/LEGO_EV3_31313_Legacy_Builds.pdf">Open Legacy Build PDF</a>
+        <a class="button secondary" href="https://www.lego.com/service/building-instructions/31313">Official LEGO #31313 Instructions</a>
+      </div>
+
+      <div class="panel">
+        <h4>Open-source / advanced</h4>
+        <ul class="resource-list">
+          <li><a href="https://github.com/ev3dev/ev3dev">ev3dev</a> — Linux-based community platform for EV3.</li>
+          <li><a href="https://github.com/Apress/beg-lego-mindstorms-ev3">Apress Beginning LEGO MINDSTORMS EV3 source files</a>.</li>
+          <li><a href="https://github.com/Markay12/mindstormsEV3">Community EV3 examples</a>.</li>
+        </ul>
+        <p><strong>Reminder:</strong> third-party resources may use different hardware, software, or licenses. Read before copying.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>🔗 Important links</h3>
+    <div class="quicklinks">
+      <a href="https://education.lego.com/en-gb/product-resources/mindstorms-ev3/downloads/building-instructions/">LEGO Education EV3 Building Instructions</a>
+      <a href="https://education.lego.com/en-gb/product-resources/mindstorms-ev3/downloads/user-guide/">LEGO Education EV3 User Guide</a>
+      <a href="https://education.lego.com/en-gb/start/mindstorms-ev3/">LEGO EV3 Getting Started</a>
+      <a href="https://education.lego.com/en-gb/downloads/retiredproducts/mindstorms-ev3/curriculum/">Retired EV3 Curriculum Archive</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>LEGO®, MINDSTORMS®, and EV3</strong> are trademarks of the LEGO Group. This independent classroom resource is not affiliated with or endorsed by the LEGO Group.</p>
+    <p>Classroom goal: build accurately, reason about systems, test ideas, debug systematically, and become increasingly independent.</p>
+  </div>
+</footer>
 </body>
 </html>
