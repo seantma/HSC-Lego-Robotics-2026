@@ -219,6 +219,18 @@
       header { position: static; }
       .section { scroll-margin-top: 20px; }
     }
+  
+    .checkin-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:22px;align-items:start}
+    .field{margin:16px 0}.field label{display:block;font-weight:700;margin-bottom:7px}
+    .field select,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);font:inherit}
+    .field textarea{min-height:96px;resize:vertical}.choice-row{display:flex;flex-wrap:wrap;gap:10px}
+    .choice-row label{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
+    .choice-row input{accent-color:var(--accent)}.submit-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .status{display:none;margin-top:14px;padding:12px 14px;border-radius:10px;background:#dafbe1;border:1px solid #aceebb;color:#116329;font-weight:600}
+    .privacy-note{padding:12px 14px;border-radius:10px;background:#fff8c5;border:1px solid #d4a72c;font-size:.94rem}
+    .mini-list{padding-left:20px}.mini-list li{margin:7px 0}
+    @media(max-width:900px){.checkin-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -233,6 +245,7 @@
       <a href="#program">Program</a>
       <a href="#troubleshoot">Troubleshoot</a>
       <a href="#explore">Explore</a>
+      <a href="#checkin">Check-In</a>
       <a href="README.md">README</a>
     </nav>
   </div>
@@ -402,6 +415,59 @@
     </div>
   </section>
 
+
+  <section id="checkin" class="section">
+    <h3>💬 Weekly Check-In</h3>
+    <p class="section-lead">Take about 2 minutes to tell us how robotics went today. Your feedback helps improve future lessons.</p>
+    <div class="checkin-grid">
+      <div class="panel">
+        <form id="student-checkin-form">
+          <div class="field">
+            <label for="studentName">1. Your first name</label>
+            <select id="studentName" name="studentName" required>
+              <option value="">Select your name</option>
+              <option value="Joseph">Joseph</option><option value="Timothy">Timothy</option><option value="Garrett">Garrett</option><option value="Charles">Charles</option><option value="Jack">Jack</option><option value="Xander">Xander</option><option value="Benedict">Benedict</option><option value="Cora">Cora</option><option value="Colin">Colin</option><option value="Philip">Philip</option><option value="Alexander">Alexander</option><option value="Henry">Henry</option><option value="Daniel">Daniel</option>
+            </select>
+          </div>
+          <div class="field"><label>2. Today I worked on...</label><div class="choice-row">
+            <label><input type="checkbox" name="workedOn" value="🧱 Build"> 🧱 Build</label>
+            <label><input type="checkbox" name="workedOn" value="💻 Program"> 💻 Program</label>
+            <label><input type="checkbox" name="workedOn" value="🧪 Test"> 🧪 Test</label>
+            <label><input type="checkbox" name="workedOn" value="🛠️ Debug"> 🛠️ Debug</label>
+            <label><input type="checkbox" name="workedOn" value="📝 Notebook"> 📝 Notebook</label>
+          </div></div>
+          <div class="field"><label>3. How did today feel?</label><div class="choice-row">
+            <label><input type="radio" name="difficulty" value="🙂 Easy" required> 🙂 Easy</label>
+            <label><input type="radio" name="difficulty" value="😐 About right"> 😐 About right</label>
+            <label><input type="radio" name="difficulty" value="😕 Hard"> 😕 Hard</label>
+          </div></div>
+          <div class="field"><label for="workedWell">4. What worked well today?</label><textarea id="workedWell" name="workedWell" maxlength="500" placeholder="What went well?"></textarea></div>
+          <div class="field"><label for="stuck">5. Where did you get stuck?</label><textarea id="stuck" name="stuck" maxlength="500" placeholder="What was challenging?"></textarea></div>
+          <div class="field"><label for="learned">6. One thing I learned today...</label><textarea id="learned" name="learned" maxlength="500" placeholder="I learned that..."></textarea></div>
+          <div class="field"><label>7. Do you need teacher help next week?</label><div class="choice-row">
+            <label><input type="radio" name="needHelp" value="✅ No" required> ✅ No</label>
+            <label><input type="radio" name="needHelp" value="❗ Yes"> ❗ Yes</label>
+          </div></div>
+          <div class="submit-row">
+            <button type="submit" class="button" style="border:0;cursor:pointer">Submit My Check-In</button>
+            <span style="color:var(--muted);font-size:.92rem">First name only · no email required</span>
+          </div>
+          <div id="checkin-status" class="status">Thanks! Your check-in was submitted.</div>
+        </form>
+        <div class="privacy-note" style="margin-top:16px"><strong>Privacy:</strong> this classroom check-in uses first names only. Avoid including personal or sensitive information in the text boxes.</div>
+      </div>
+      <aside>
+        <div class="panel"><h4>Why your feedback matters</h4><ul class="mini-list">
+          <li>Helps the teacher know where students need support.</li>
+          <li>Improves future lessons and challenges.</li>
+          <li>Shows what students are learning over time.</li>
+          <li>Helps us spot repeated equipment or programming problems.</li>
+        </ul></div>
+        <div class="panel" style="margin-top:18px"><h4>Before asking for help</h4><p>Try the Troubleshoot steps first. Then tell us what you already tested.</p><a class="button secondary" href="#troubleshoot">Go to Troubleshoot</a></div>
+      </aside>
+    </div>
+  </section>
+
   <section class="section">
     <h3>🔗 Important links</h3>
     <div class="quicklinks">
@@ -419,5 +485,44 @@
     <p>Classroom goal: build accurately, reason about systems, test ideas, debug systematically, and become increasingly independent.</p>
   </div>
 </footer>
+
+<script>
+const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSdoGrQ9-RBhIHzDzgvBfjzaaqGZePJncd9lw8SbHYKDssda4g/formResponse";
+const FIELD_MAP = {
+  studentName: "entry.178425502",
+  workedOn:    "entry.1090337826",
+  difficulty:  "entry.12998058",
+  workedWell:  "entry.779980821",
+  stuck:       "entry.920853663",
+  learned:     "entry.1166336129",
+  needHelp:    "entry.328246107"
+};
+document.getElementById("student-checkin-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const selectedWork = [...form.querySelectorAll('input[name="workedOn"]:checked')];
+  if (!selectedWork.length) {
+    alert("Please select at least one thing you worked on today.");
+    return;
+  }
+  const data = new FormData();
+  data.append(FIELD_MAP.studentName, form.studentName.value);
+  selectedWork.forEach(el => data.append(FIELD_MAP.workedOn, el.value));
+  data.append(FIELD_MAP.difficulty, form.difficulty.value);
+  data.append(FIELD_MAP.workedWell, form.workedWell.value);
+  data.append(FIELD_MAP.stuck, form.stuck.value);
+  data.append(FIELD_MAP.learned, form.learned.value);
+  data.append(FIELD_MAP.needHelp, form.needHelp.value);
+  try {
+    await fetch(FORM_ACTION,{method:"POST",mode:"no-cors",body:data});
+    document.getElementById("checkin-status").style.display="block";
+    form.reset();
+    setTimeout(()=>document.getElementById("checkin-status").style.display="none",5000);
+  } catch(err) {
+    alert("We could not submit your check-in. Please tell the instructor.");
+  }
+});
+</script>
+
 </body>
 </html>
